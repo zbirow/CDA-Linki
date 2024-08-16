@@ -10,18 +10,17 @@ let play = document.querySelector('span.folder-area');
 let cxd = document.createElement("div");
 let pageNumber = page ? parseInt(page.textContent) : 1;
 
-    // Funkcja do generowania tablicy liczb co 36
-    function generateNumbers(start, count) {
-        let numbers = [];
-        for (let i = start; i < start + count; i++) {
-            numbers.push(i);
-        }
-        return numbers;
-    }
-    let ar;
-
+// Funkcja do generowania tablicy liczb co 36
+function generateNumbers(start, count) {
+let numbers = [];
+for (let i = start; i < start + count; i++) {
+numbers.push(i);
+}
+return numbers;
+}
+let ar;
     // Określenie tablicy w zależności od numeru strony
-    switch (pageNumber) {
+switch (pageNumber) {
        case 1:
     ar = generateNumbers(1, 36);
     break;
@@ -193,11 +192,10 @@ case 56:
 case 57:
     ar = generateNumbers(2017, 36);
     break;
-        default:
-            ar = generateNumbers(1, 36);
-            break;
-    };
-
+default:
+    ar = generateNumbers(1, 36);
+    break;
+};
 ///////Copy///////
 cxd.className="cxd"
 play.appendChild(cxd);
@@ -213,6 +211,7 @@ build.innerHTML = `<h3>Odcinek `+ar[g]+`</h3><sup id="`+ar[g]+`zbirow" style="co
 let fix = document.querySelector('span.folder-area');
 let bui = document.createElement("div");
 bui.className="cxfd"
+bui.innerHTML = `<button class="btn" style="margin-left:140px; margin-top:-50px;" type="button" data-copy-id="Copyzbirow">Copy All</button>`
 fix.appendChild(bui);
 for (var d = 0; d<links.length; d++){
 let br = document.querySelector('div.cxfd');
@@ -297,74 +296,80 @@ input:checked + .slider:before {
 dendo.appendChild(elect);
 ///////Switch///////
 const jstoggle = document.getElementsByClassName('zswit')[0];
-  jstoggle.addEventListener('click', () => {
-  document.querySelector("div.cxd").classList.toggle('open');
-      document.querySelector("div.cxfd").classList.toggle('open');
-  });
+jstoggle.addEventListener('click', () => {
+document.querySelector("div.cxd").classList.toggle('open');
+document.querySelector("div.cxfd").classList.toggle('open');
+});
 })();
 //////Copy Script///////////
 function copyEvent(elementId) {
-    const element = document.getElementById(elementId);
-
-    if (!element) {
-        console.error(`Element z ID ${elementId} nie został znaleziony.`);
-        return;
-    }
-
-    const textarea = document.createElement('textarea');
-    textarea.style.position = 'fixed';
-    textarea.style.opacity = '0';
-    textarea.value = element.innerText;
-
-    document.body.appendChild(textarea);
-    textarea.select();
-    document.execCommand('copy');
-    document.body.removeChild(textarea);
-
-    showCopyNotification();
+const element = document.getElementById(elementId);
+if (!element) {
+return;
 }
-
+const textarea = document.createElement('textarea');
+textarea.style.position = 'fixed';
+textarea.style.opacity = '0';
+textarea.value = element.innerText;
+document.body.appendChild(textarea);
+textarea.select();
+document.execCommand('copy');
+document.body.removeChild(textarea);
+showCopyNotification();
+}
 function showCopyNotification() {
-    const notification = document.createElement('div');
-    notification.innerText = 'Skopiowano!';
-    notification.style.position = 'fixed';
-    notification.style.top = '20px';
-    notification.style.right = '20px';
-    notification.style.padding = '10px 20px';
-    notification.style.backgroundColor = '#28a745';
-    notification.style.color = '#fff';
-    notification.style.fontSize = '16px';
-    notification.style.borderRadius = '5px';
-    notification.style.boxShadow = '0px 0px 10px rgba(0, 0, 0, 0.1)';
-    notification.style.zIndex = '1000';
-    notification.style.opacity = '0';
-    notification.style.transition = 'opacity 0.3s ease';
-
-    document.body.appendChild(notification);
-
-    // Pokaż notyfikację
-    setTimeout(() => {
-        notification.style.opacity = '1';
-    }, 100);
-
-    // Ukryj notyfikację po 3 sekundach
-    setTimeout(() => {
-        notification.style.opacity = '0';
-        setTimeout(() => {
-            document.body.removeChild(notification);
-        }, 100);
-    }, 1000);
+const notification = document.createElement('div');
+notification.innerText = 'Skopiowano!';
+notification.style.position = 'fixed';
+notification.style.top = '20px';
+notification.style.right = '20px';
+notification.style.padding = '10px 20px';
+notification.style.backgroundColor = '#28a745';
+notification.style.color = '#fff';
+notification.style.fontSize = '16px';
+notification.style.borderRadius = '5px';
+notification.style.boxShadow = '0px 0px 10px rgba(0, 0, 0, 0.1)';
+notification.style.zIndex = '1000';
+notification.style.opacity = '0';
+notification.style.transition = 'opacity 0.3s ease';
+document.body.appendChild(notification);
+// Pokaż powiadomienie
+setTimeout(() => {
+notification.style.opacity = '1';
+}, 100);
+// Ukryj powiadomienie po 2 sekundach
+setTimeout(() => {
+notification.style.opacity = '0';
+setTimeout(() => {
+document.body.removeChild(notification);
+}, 200);
+}, 2000);
 }
-
 function initializeCopyButtons() {
-    const buttons = document.querySelectorAll('.btn');
-
-    buttons.forEach(button => {
-        button.addEventListener('click', function() {
-            const elementId = button.getAttribute('data-copy-id');
-            copyEvent(elementId);
-        });
-    });
+const buttons = document.querySelectorAll('.btn');
+buttons.forEach(button => {
+button.addEventListener('click', function() {
+const elementId = button.getAttribute('data-copy-id');
+const copy = document.querySelector('button[data-copy-id="'+elementId+'"]');
+copy.textContent = "Skopiowano";
+copyEvent(elementId);
+});
+});
+const copyButton = document.querySelector('button[data-copy-id="Copyzbirow"]');
+copyButton.addEventListener('click', function() {
+const divs = document.querySelectorAll('.cxfd.open div');
+const linksWithNumbers = [];
+divs.forEach(div => {
+const text = div.textContent.trim(); // Pobierz tekst i usuń białe znaki
+linksWithNumbers.push(text); // Dodaj tekst do tablicy
+});
+const allLinks = linksWithNumbers.join('\n');
+navigator.clipboard.writeText(allLinks).then(() => {
+showCopyNotification();
+copyButton.textContent = "Skopiowano";
+}).catch(err => {
+console.error('Błąd podczas kopiowania:', err);
+});
+});
 }
-
 window.addEventListener('load', initializeCopyButtons);
