@@ -1,14 +1,24 @@
 (function getAttribute() {
     'use strict'
 ///////Dane///////
-let page = document.querySelector('.pagination > .active > a');
+let page = document.querySelector('.paginationControl_pages.pagination text-center > li.active > a');
 let links = document.querySelectorAll('a.thumbnail-link');
 let ifra = `iframe src="https://ebd.cda.pl/620x395/`
 let ifre = `" width="620" height="395" style="border:none" frameBorder="0" scrolling="no" allowfullscreen name="v2"`
 let treu = `/iframe`
-let play = document.querySelector('span.folder-area');
+let play = document.querySelector('div.panel-body.panel-body-sm.folder-area');
 let cxd = document.createElement("div");
-let pageNumber = page ? parseInt(page.textContent) : 1;
+
+function getPageFromURL() {
+const path = window.location.pathname;
+const parts = path.split('/').filter(Boolean);
+const last = parts[parts.length - 1];
+if (!isNaN(last)) {
+return parseInt(last, 10);
+}
+return 1;
+}
+let pageNumber = getPageFromURL();
 
 // Funkcja do generowania tablicy liczb co 36
 function generateNumbers(start, count) {
@@ -196,6 +206,7 @@ default:
     ar = generateNumbers(1, 36);
     break;
 };
+
 ///////Copy///////
 cxd.className="cxd"
 play.appendChild(cxd);
@@ -208,7 +219,7 @@ player.appendChild(build);
 build.innerHTML = `<h3>Odcinek `+ar[g]+`</h3><sup id="`+ar[g]+`zbirow" style="color:#24282A; font-size: 0%;"><span><</span>`+ifra+links[g].href.split('/').slice(4)+ifre+`<span>><</span>`+treu+`<span>></span></sup>`+
 `<button class="btn" style="margin-left:140px; margin-top:-50px;" type="button" data-copy-id="`+ar[g]+`zbirow">Copy</button>`}
 ///////DC Link///////
-let fix = document.querySelector('span.folder-area');
+let fix = document.querySelector('div.panel-body.panel-body-sm.folder-area');
 let bui = document.createElement("div");
 bui.className="cxfd"
 bui.innerHTML = `<button class="btn" style="margin-left:140px; margin-top:-50px;" type="button" data-copy-id="Copyzbirow">Copy All</button>`
@@ -333,11 +344,9 @@ notification.style.zIndex = '1000';
 notification.style.opacity = '0';
 notification.style.transition = 'opacity 0.3s ease';
 document.body.appendChild(notification);
-// Pokaż powiadomienie
 setTimeout(() => {
 notification.style.opacity = '1';
 }, 100);
-// Ukryj powiadomienie po 2 sekundach
 setTimeout(() => {
 notification.style.opacity = '0';
 setTimeout(() => {
@@ -360,8 +369,8 @@ copyButton.addEventListener('click', function() {
 const divs = document.querySelectorAll('.cxfd.open div');
 const linksWithNumbers = [];
 divs.forEach(div => {
-const text = div.textContent.trim(); // Pobierz tekst i usuń białe znaki
-linksWithNumbers.push(text); // Dodaj tekst do tablicy
+const text = div.textContent.trim();
+linksWithNumbers.push(text);
 });
 const allLinks = linksWithNumbers.join('\n');
 navigator.clipboard.writeText(allLinks).then(() => {
